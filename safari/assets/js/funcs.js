@@ -25,8 +25,8 @@ function performCommand(event) {
     			break;	
     		case 1:
     			fetchTokenFromServiceWithCompletion(function(response){
-    				safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(dataPassMessageName, "showLoading");
     				if (response && response.status && response.token && response.id) {
+    					safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(dataPassMessageName, "showLoading");
     					var pageTitle = safari.application.activeBrowserWindow.activeTab.title;
     					createPost(pageTitle, currentURL, response.token, response.id, function(){
     						safari.application.activeBrowserWindow.activeTab.page.dispatchMessage(dataPassMessageName, "hideLoading");
