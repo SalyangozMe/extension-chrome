@@ -1,6 +1,7 @@
 function fetchTokenFromServiceWithCompletion(callback){
-    console.log(salyangozServiceTokenFetchURL);
-    fetch(salyangozServiceTokenFetchURL, {credentials: 'include'}).then(function (response) {
+    fetch(salyangozServiceTokenFetchURL, {
+        credentials: 'include'
+    }).then(function (response) {
         return response.json()
     }).then(function (response) {
         callback(response);
