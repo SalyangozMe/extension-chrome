@@ -20,8 +20,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["http://salyangoz.me/*"],
-      "js": ["src/checker.js"]
+      "matches": [
+        "http://salyangoz.me/*"
+      ],
+      "js": [
+        "src/checker.js"
+      ]
     }
   ],
   "permissions": [

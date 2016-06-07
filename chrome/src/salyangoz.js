@@ -2,6 +2,7 @@
 var port = chrome.extension.connect();
 
 (function () {
+
   if (document.getElementById("Salyangoz-Extension")) {
     // If any other Salyangoz item exists on page, do not run.
     return;
@@ -12,44 +13,24 @@ var port = chrome.extension.connect();
   salyangozContainer.id = "Salyangoz-Extension";
   salyangozContainer.className = "Salyangoz";
   salyangozContainer.innerHTML = `
-    <div class="SalyangozBar">
-      <button class="SalyangozBar_cancel" type="button">
-        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24" height="24" viewBox="0 0 24 24">
-          <path d="M18.984 6.422l-5.578 5.578 5.578 5.578-1.406 1.406-5.578-5.578-5.578 5.578-1.406-1.406 5.578-5.578-5.578-5.578 1.406-1.406 5.578 5.578 5.578-5.578z"></path>
-        </svg>
-      </button>
-      <div class="SalyangozBar_loading"></div>
+    <div class="SalyangozContent">
+      <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="48" height="48" viewBox="0 0 48 48">
+        <path d="M4.031 31.969v-3.938h15.938v3.938h-15.938zM36 28.031h7.969v3.938h-7.969v8.063h-4.031v-8.063h-7.969v-3.938h7.969v-8.063h4.031v8.063zM28.031 12v4.031h-24v-4.031h24zM28.031 19.969v4.031h-24v-4.031h24z"></path>
+      </svg> Added
     </div>
   `;
-  salyangozContainer.querySelector('.SalyangozBar_cancel').onclick = removeContainer;
   document.body.appendChild(salyangozContainer);
-
 
   function removeContainer() {
     setTimeout(function () {
-      salyangozContainer.classList.remove("isSaving")
-    }, 20);
-
-    setTimeout(function () {
       document.body.removeChild(salyangozContainer);
-    }, 500);
-
-    clearTimeout(delayedShare);
-    clearTimeout(animation);
+    }, 700)
   }
 
-
-  var delayedShare, animation;
-
-  animation = setTimeout(function () {
-    salyangozContainer.classList.add("isSaving");
-  }, 20);
-
-  delayedShare = setTimeout(function () {
-    // Send message to active page that they can share the actual page with Salyangoz.
-    port.postMessage({message: "shareWithSalyangoz"});
-  }, 2500);
-
+  // Send message to active page that they can share the actual page with Salyangoz.
+  port.postMessage({
+    message: "shareWithSalyangoz"
+  });
 
   port.onMessage.addListener(function (msg) {
     // If salyangoz is shared, remove the loading bar.

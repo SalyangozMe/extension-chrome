@@ -11,14 +11,14 @@ function postToSalyangoz(title, url, token, id, callback) {
     body: data,
     credentials: 'include'
   })
-  .then(function (response) {
-    return response.json()
-  })
-  .then(function (response) {
-    if (response.success) {
-      callback()
-    }
-  })
+    .then(function (response) {
+      return response.json()
+    })
+    .then(function (response) {
+      if (response.success) {
+        callback()
+      }
+    })
 }
 
 var sharer = function () {
@@ -53,29 +53,29 @@ chrome.browserAction.onClicked.addListener(function (tab) {
     return;
   }
   fetch(server + "/api/v1/token", {credentials: 'include'})
-  .then(function (response) {
-    return response.json()
-  })
-  .then(function (response) {
-    if (response && response.status && response.token && response.id) {
-      chrome.tabs.insertCSS({file: "src/salyangoz.css"});
-      chrome.tabs.executeScript({file: "src/salyangoz.js"});
+    .then(function (response) {
+      return response.json()
+    })
+    .then(function (response) {
+      if (response && response.status && response.token && response.id) {
+        chrome.tabs.insertCSS({file: "src/salyangoz.css"});
+        chrome.tabs.executeScript({file: "src/salyangoz.js"});
 
-      sharer = function () {
-        postToSalyangoz(tab.title, tab.url, response.token, response.id, function () {
-          _extensionPort.postMessage({message: "salyangozIsShared"})
-        })
+        sharer = function () {
+          postToSalyangoz(tab.title, tab.url, response.token, response.id, function () {
+            _extensionPort.postMessage({message: "salyangozIsShared"})
+          })
+        }
+      } else {
+        chrome.tabs.create({url: server + "/"})
       }
-    } else {
-      chrome.tabs.create({url: server + "/login"})
-    }
-  })
+    })
 });
 
 chrome.runtime.onInstalled.addListener(function (details) {
   if (details.reason == "install") {
     chrome.tabs.create({
-      url: server + "/welcome"
+      url: server + "/recent"
     });
   }
 });
