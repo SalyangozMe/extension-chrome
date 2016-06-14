@@ -40,7 +40,7 @@ chrome.browserAction.onClicked.addListener(function (tab) {
     alert("This URL is not a good thing to share.")
     return;
   }
-  if (tab.url.match(/^http\:\/\/([a-z]+\.)?salyangoz\.me(\/.*)?/)) {
+  if (tab.url.match(/^https?\:\/\/([a-z]+\.)?salyangoz\.me(\/.*)?/)) {
     alert("Sharing Salyangoz in Salyangoz would be Salyangozception.\n\nThis is not cool.")
     return;
   }
