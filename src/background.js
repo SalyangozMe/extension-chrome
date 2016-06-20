@@ -35,7 +35,7 @@ chrome.runtime.onConnect.addListener(function (port) {
   });
 });
 
-chrome.browserAction.onClicked.addListener(function (tab) {
+function loginAndShare(tab) {
   if (tab.url.match(/^ftp\:|^javascript\:|^data\:/)) {
     alert("This URL is not a good thing to share.")
     return;
@@ -70,12 +70,26 @@ chrome.browserAction.onClicked.addListener(function (tab) {
         chrome.tabs.create({url: server + "/"})
       }
     })
+}
+
+chrome.browserAction.onClicked.addListener(function (tab) {
+  loginAndShare(tab)
 });
 
 chrome.runtime.onInstalled.addListener(function (details) {
   if (details.reason == "install") {
     chrome.tabs.create({
       url: server + "/recent"
-    });
+    })
   }
-});
+})
+
+chrome.contextMenus.create({
+  title: "Share on Salyangoz",
+  contexts: ["page", "link"],
+  onclick: function (ctx) {
+    var url = ctx.linkUrl || ctx.pageUrl
+    loginAndShare({url: url})
+  }
+})
+
