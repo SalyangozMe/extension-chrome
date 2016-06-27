@@ -1,7 +1,7 @@
 {
   "name": "Salyangoz: Share your voyage on the net.",
   "short_name": "Salyangoz",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "manifest_version": 2,
   "description": "Salyangoz is a online bookmarking tool that allows you to share your bookmarks on your timeline and follow friends' bookmarks.",
   "homepage_url": "http://salyangoz.me",
@@ -21,7 +21,8 @@
   "content_scripts": [
     {
       "matches": [
-        "*://salyangoz.me/*"
+        "*://salyangoz.me/*",
+        "*://salyangoz.herokuapp.com/*"
       ],
       "js": [
         "src/checker.js"
@@ -29,6 +30,7 @@
     }
   ],
   "permissions": [
+    "notifications",
     "contextMenus",
     "activeTab",
     "*://salyangoz.me/*"

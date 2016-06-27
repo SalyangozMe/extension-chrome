@@ -1,4 +1,4 @@
-var server = "http://salyangoz.me";
+var server = "https://salyangoz.me";
 
 function postToSalyangoz(title, url, token, id, callback) {
   var data = new FormData();
@@ -93,3 +93,42 @@ chrome.contextMenus.create({
   }
 })
 
+var nId
+setInterval(function () {
+  var now = new Date()
+  var date = new Date(localStorage.getItem('notification-shown'))
+
+  var hours = ((now - date) / 1000 / 60 / 60 / 24)
+  if (hours < 24) {
+    return
+  }
+
+  fetch(server + "/popular.json").then(function (response) {
+    return response.json()
+  }).then(function (response) {
+    chrome.notifications.create("salyangoz-popular", {
+      type: "list",
+      title: "What's popular on Salyangoz?",
+      message: "",
+      iconUrl: "https://salyangoz.me/icon.png",
+      items: response.posts.splice(0, 5).map(function (post) {
+        return {title: "• " + post.title, message: "— @" + post.user.user_name}
+      }),
+      buttons: [
+        {title: "View all popular links..."},
+      ]
+    }, function (id) {
+      nId = id
+    })
+    localStorage.setItem('notification-shown', new Date())
+  })
+}, 60 * 1000)
+
+chrome.notifications.onButtonClicked.addListener(function(notifId, btnIdx) {
+  if (notifId === nId) {
+    chrome.notifications.clear(nId)
+    if (btnIdx === 0) {
+      window.open("http://salyangoz.me/popular")
+    }
+  }
+});
